@@ -25,7 +25,7 @@ class Halftone(object):
     def __init__(self, path):
         self.path = path
 
-    def make(self, sample=10):
+    def make(self):
         f, e = os.path.splitext(self.path)
 
         outfile = "%s%s%s" % (f, '_halftoned', e)
@@ -38,6 +38,8 @@ class Halftone(object):
         angles = [] 
         for j in range(4): 
             angles.append(random.randint(0, 90))
+        
+        sample = random.randint(5,15)
         
         cmyk = im.convert('CMYK')
         dots = self.halftone(im, cmyk, sample, angles, shape =random.getrandbits(1))
