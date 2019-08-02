@@ -1,13 +1,7 @@
 # %% libraries
 import PIL.Image as Image
 import numpy.matlib
-import numpy as np
 import random
-import math
-
-import PIL.Image as Image
-import matplotlib.pyplot as plt
-import numpy as np
 
 
 def error_diffusion(pixel, size=(1, 1)):
@@ -28,9 +22,14 @@ def error_diffusion(pixel, size=(1, 1)):
 def generate_halftone(img):
   img = img.convert('CMYK')
   img = img.split()
-  dots = []
-  for chan in img:
-    error_diffusion(chan.load(), chan.size)
+  angles = [[15, 45, 0, 75],
+              [15,75,0,45]]
+
+  angles = angles[random.randint(0, len(angles) - 1)]
+  for x,chan in enumerate(img):
+      chan.rotate(angles[x], expand=1)
+      error_diffusion(chan.load(), chan.size)
+      chan.rotate(-angles[x], expand=1)
   img = Image.merge("CMYK", img).convert("RGB")
   return img
 
