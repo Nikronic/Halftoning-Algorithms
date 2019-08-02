@@ -1,3 +1,10 @@
+# %% libraries
+import PIL.Image as Image
+import numpy.matlib
+import numpy as np
+import random
+import math
+
 import PIL.Image as Image
 import matplotlib.pyplot as plt
 import numpy as np
@@ -17,17 +24,13 @@ def error_diffusion(pixel, size=(1, 1)):
             pixel[x - 1, y + 1] = pixel[x - 1, y + 1] + int(3 / 16.0 * quant_error)
             pixel[x, y + 1] = pixel[x, y + 1] + int(5 / 16.0 * quant_error)
             pixel[x + 1, y + 1] = pixel[x + 1, y + 1] + int(1 / 16.0 * quant_error)
-    print(np.asarray(pixel))
 
+def generate_halftone(img):
+  img = img.convert('CMYK')
+  img = img.split()
+  dots = []
+  for chan in img:
+    error_diffusion(chan.load(), chan.size)
+  img = Image.merge("CMYK", img).convert("RGB")
+  return img
 
-if __name__ == "__main__":
-    img = Image.open('C:/Users/Hamed/Desktop/Halftoning/halftone algorithm/val_256/val_256/Places365_val_00004268.jpg')
-    im = img.convert('CMYK')
-    im = im.split()
-    dots = []
-    for chan in im:
-        error_diffusion(chan.load(), chan.size)
-    im = Image.merge("CMYK", im).convert("RGB")
-    imgplot = plt.imshow(im)
-    plt.show()
-    im.save('my_image.png')
