@@ -23,7 +23,8 @@ def generate_halftone(img):
   img = img.convert('CMYK')
   img = img.split()
   angles = [[15, 45, 0, 75],
-              [15,75,0,45]]
+            [15,75,0,45],
+            [75, 15, 0, 45]]
 
   angles = angles[random.randint(0, len(angles) - 1)]
   for x,chan in enumerate(img):
